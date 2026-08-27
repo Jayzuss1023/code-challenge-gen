@@ -6,10 +6,10 @@ readme = "README.md"
 authors = [
     { name = "Jayzuss1023", email = "jesus.flo369@gmail.com" }
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.14"
 dependencies = [
     "alchemy>=20.5",
-    "clerk-sdk-python>=0.1.0",
+    "clerk-backend-api>=4.0.0",
     "fastapi>=0.125.0",
     "openai>=2.54.0",
     "python-dotenv>=1.2.3",
