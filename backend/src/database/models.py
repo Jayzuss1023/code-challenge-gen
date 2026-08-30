@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker, Mapped, mapped_column
-from sqlalchemy import Column, Integer, String, DateTime, create_engine
+from sqlalchemy import Integer, String, DateTime, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
@@ -8,7 +8,7 @@ engine = create_engine('sqlite:///database.db', echo=True)
 Base = declarative_base()
 
 class Challenge(Base):
-    __tablebane__ = 'challenges'
+    __tablename__ = 'challenges'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     difficulty: Mapped[str] = mapped_column(String, nullable=False)

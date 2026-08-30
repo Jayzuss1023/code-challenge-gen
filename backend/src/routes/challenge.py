@@ -19,7 +19,8 @@ class ChallengeRequest(BaseModel):
     class Config:
         json_schema_extra = {"example": {"difficulty": "easy"}}
 
-@router.get("/generate-challenge")
+# Create challenge route
+@router.post("/generate-challenge")
 async def generate_challenge(request: ChallengeRequest, request_obj: Request, db: Session = Depends(get_db)):
     try:
         user_details = authenticate_and_get_user_details(request_obj)
@@ -57,10 +58,11 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
             "correct_answer": new_challenge.explanation,
             "timespant": new_challenge.date_created.isoformat()
         }
-    except:
+    except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
 
+# Return history of challenges the user has created
 @router.get("/my-history")
 async def my_history(request: Request, db: Session = Depends(get_db)):
     user_details = authenticate_and_get_user_details(request)
@@ -69,6 +71,7 @@ async def my_history(request: Request, db: Session = Depends(get_db)):
     challenges = get_user_challenges(db, user_id)
     return {"challenges": challenges}
 
+# Return user's number of quota usages
 @router.get("/quota")
 async def get_quota(request: Request, db: Session = Depends(get_db)):
     user_details = authenticate_and_get_user_details(request)
