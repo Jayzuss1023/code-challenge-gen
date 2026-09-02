@@ -15,6 +15,7 @@ dependencies = [
     "python-dotenv>=1.2.3",
     "sql>=2022.4.0",
     "sqlalchemy>=2.0.52",
+    "svix>=2.2.0",
     "uvicorn>=0.52.4",
 ]
 

@@ -4,15 +4,15 @@ export const useApi = () => {
   const { getToken } = useAuth();
 
   const makeRequest = async (endpoint: string, options?: {}) => {
-    const token = getToken();
+    const token = await getToken();
     const defaultOptions = {
       headers: {
-        "Content-Type": "application.json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const response = await fetch(`https://localhost:8000/api/${endpoint}`, {
+    const response = await fetch(`http://localhost:8000/api/${endpoint}`, {
       ...defaultOptions,
       ...options,
     });

@@ -14,7 +14,7 @@ def create_challenge_quota(db: Session, user_id: str):
     db_quota = models.ChallengeQuota(user_id=user_id)
     db.add(db_quota)
     db.commit()
-    db.refresh()
+    db.refresh(db_quota)
     return db_quota
 
 # Reset quota to request for more challenges after 24 hours

@@ -14,3 +14,4 @@ app.add_middleware(
 
 
 app.include_router(challenge.router, prefix="/api")
+app.include_router(webhooks.router, prefix="/webhooks")
