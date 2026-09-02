@@ -26,11 +26,11 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
         user_details = authenticate_and_get_user_details(request_obj)
         user_id = user_details.get("user_id")
 
-        quota = get_challenge_quota(user_id)
+        quota = get_challenge_quota(db, user_id)
         if not quota:
-            quota = create_challenge_quota(user_id)
-        
-        quota = reset_quota_if_needed(user_id)
+            quota = create_challenge_quota(db, user_id)
+
+        quota = reset_quota_if_needed(db, quota)
 
         if quota.quota_remaining <= 0:
             raise HTTPException(status_code=429, detail="Quota Exhausted")
@@ -46,6 +46,7 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
             correct_answer_id=challenge_data["correct_answer_id"],
             explanation=challenge_data["explanation"]
         )
+        print("NEW CHALLENGE", new_challenge)
 
         quota.quota_remaining -= 1
         db.commit()
@@ -55,8 +56,9 @@ async def generate_challenge(request: ChallengeRequest, request_obj: Request, db
             "difficulty": request.difficulty,
             "title": new_challenge.title,
             "options": json.loads(new_challenge.options),
-            "correct_answer": new_challenge.explanation,
-            "timespant": new_challenge.date_created.isoformat()
+            "correct_answer_id": new_challenge.correct_answer_id,
+            "explanation": new_challenge.explanation,
+            "timestamp": new_challenge.date_created.isoformat()
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -78,7 +80,7 @@ async def get_quota(request: Request, db: Session = Depends(get_db)):
     user_id = user_details.get("user_id")
 
     quota = get_challenge_quota(db, user_id)
-    print("QUUOOTTTAA", quota)
+
     if not quota:
         return {
             "user_id": user_id,

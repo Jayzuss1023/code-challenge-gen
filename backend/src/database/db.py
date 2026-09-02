@@ -1,4 +1,3 @@
-from ast import Str
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from . import models
@@ -17,10 +16,18 @@ def create_challenge_quota(db: Session, user_id: str):
     db.refresh(db_quota)
     return db_quota
 
+def _as_datetime(value):
+    if isinstance(value, datetime):
+        return value
+    if isinstance(value, str):
+        return datetime.fromisoformat(value)
+    return value
+
 # Reset quota to request for more challenges after 24 hours
 def reset_quota_if_needed(db: Session, quota: models.ChallengeQuota):
     now = datetime.now()
-    if now - quota.last_reset_date > timedelta(hours=24):
+    last_reset = _as_datetime(quota.last_reset_date)
+    if now - last_reset > timedelta(hours=24):
         quota.quota_remaining = 10
         quota.last_reset_date = now
         db.commit()

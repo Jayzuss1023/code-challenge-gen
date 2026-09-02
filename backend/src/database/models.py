@@ -11,6 +11,7 @@ class Challenge(Base):
     __tablename__ = 'challenges'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    title: Mapped[str] = mapped_column(String, nullable=False)
     difficulty: Mapped[str] = mapped_column(String, nullable=False)
     date_created: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     created_by: Mapped[str] = mapped_column(String, nullable=False)
