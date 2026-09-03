@@ -23,6 +23,7 @@ export default function MCQChallenge({
     setShouldShowExplanation(true);
   };
 
+  // Styling for Correct/Incorrect answer
   const getOptionClass = (index: number) => {
     if (selectedOption === null) return "option";
 

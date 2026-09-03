@@ -10,12 +10,14 @@ type Quota = {
 
 export type Challenge = {
   correct_answer_id: number;
+  created_by: string;
+  date_created: string;
   difficulty: string;
   explanation: string;
   id: number;
-  options: [{ number: string }];
-  timestamp: string;
+  options: [string];
   title: string;
+  timestamp: string;
 };
 
 export default function ChallengeGenerator() {
@@ -25,10 +27,6 @@ export default function ChallengeGenerator() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [quota, setQuota] = useState<Quota>();
-
-  console.log(challenge);
-
-  const apiUse = useApi();
 
   useEffect(() => {
     fetchQuota();
